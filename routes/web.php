@@ -12,7 +12,7 @@ Route::get('/', function () {
 // Rotas de autenticação
 Auth::routes();
 
-// Rota home após login
+// Rota home  após login
 Route::get('/home', function() {
     return redirect()->route('funcionarios.index');
 })->name('home');
@@ -21,7 +21,3 @@ Route::get('/home', function() {
 Route::middleware(['auth'])->group(function () {
     Route::resource('funcionarios', 'FuncionariosController');
 });
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
