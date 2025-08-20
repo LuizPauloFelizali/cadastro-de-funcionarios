@@ -65,6 +65,14 @@
                             </div>
                         </div>
                     </form>
+                    
+                    <div class="text-center mt-3">
+                        <p>Não tem uma conta? 
+                            <a href="{{ route('register') }}" class="text-decoration-none">
+                                Registre-se aqui
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

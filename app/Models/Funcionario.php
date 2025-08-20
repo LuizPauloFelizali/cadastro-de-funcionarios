@@ -5,31 +5,29 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Funcionario extends Model 
+class Funcionario extends Model // Modelo para a tabela funcionarios
 {
 
-    protected $table = 'funcionarios'; // define o nome da tabela associada ao modelo
+    protected $table = 'funcionarios'; // conexão com a tabela
 
-    protected $fillable = [// campos que podem ser preenchidos de uma vez
-        'nome','email','cpf','telefone','nascimento','admissao',
-        'cargo','departamento','status','foto',
-    ];
 
-    protected $dates = [// campos que devem ser tratados como datas
-        'nascimento',
-        'admissao',
-        'created_at',
-        'updated_at',
-        'deleted_at', // campo para soft delete
-    ];
-
-    protected $appends = ['photo_url'];
+    // campos que podem ser preenchidos de uma vez
+    protected $fillable = ['nome','email','cpf','telefone','nascimento','admissao','cargo','departamento','status','foto',];
     
-    public function getPhotoUrlAttribute()
+
+
+    // campos que devem ser tratados como datas
+    protected $dates = ['nascimento','admissao','created_at','updated_at','deleted_at'];
+    
+
+
+    protected $appends = ['photo_url'];// adiciona o atributo photo_url ao modelo para facilitar o acesso à URL da foto do funcionário
+    
+    public function getPhotoUrlAttribute()// método para obter a URL da foto do funcionário
     {
-        return $this->foto ? asset('uploads/funcionarios/'.$this->foto) : null;
+        return $this->foto ? asset('uploads/funcionarios/'.$this->foto) : null; // retorna a URL da foto se existir, caso contrário retorna null
     }
 
-    use SoftDeletes;
+    use SoftDeletes; //habilita soft delete, permitindo que os registros sejam "excluídos" sem serem removidos do banco de dados
 
 }

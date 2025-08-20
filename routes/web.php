@@ -4,20 +4,24 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
-// Rota para a página inicial
-Route::get('/', function () {
-    return redirect()->route('funcionarios.index');
-});
-
-// Rotas de autenticação
+// Rotas de autenticação (fora do middleware)
 Auth::routes();
 
-// Rota home  após login
-Route::get('/home', function() {
-    return redirect()->route('funcionarios.index');
-})->name('home');
+Route::get('/', function () {
+    return redirect()->route('register');
+});
 
-// Rotas para o CRUD de funcionários (protegidas por auth)
+// Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
+   
+   
+   
+    // Rota home protegida
+    Route::get('/home', function() {
+        return redirect()->route('funcionarios.index');
+    })->name('home');
+    
+
+    // Rotas CRUD de funcionários
     Route::resource('funcionarios', 'FuncionariosController');
 });
