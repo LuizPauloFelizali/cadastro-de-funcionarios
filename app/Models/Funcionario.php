@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;// Modelo para a tabela funcionarios
+use Illuminate\Database\Eloquent\SoftDeletes;// habilita soft delete
 
 class Funcionario extends Model // Modelo para a tabela funcionarios
 {

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Funcionario;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;//importa a classe request 
+use App\Models\Funcionario;//importa o modelo Funcionario
 
 class FuncionariosController extends Controller 
 {

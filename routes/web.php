@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;// para definir rotas
+use Illuminate\Support\Facades\Auth;// para rotas de autenticação
 
 
 // Rotas de autenticação (fora do middleware)
@@ -23,5 +23,5 @@ Route::middleware(['auth'])->group(function () {
     
 
     // rotas CRUD de funcionários
-    Route::resource('funcionarios', 'FuncionariosController');
+    Route::resource('funcionarios', 'FuncionariosController');// ao acessar as urls de funcionários, o Laravel já mapeia as rotas corretas para as funções do controller
 });
