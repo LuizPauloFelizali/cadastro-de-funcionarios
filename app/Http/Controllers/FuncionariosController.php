@@ -16,7 +16,7 @@ class FuncionariosController extends Controller
     public function index()//lista todos os funcionarios
     {
         $funcionarios = Funcionario::all();//busca todos os funcionarios do banco de dados e atribui a variavel $funcionarios
-        return view('funcionarios.index', compact('funcionarios'));//transforma o array $funcionarios em uma variavel que pode ser usada na view
+        return view('funcionarios.index', compact('funcionarios'));//transforma o array $funcionarios em uma variavel que pode ser usada na view index
     }
 
 
@@ -28,7 +28,7 @@ class FuncionariosController extends Controller
 
     public function create()//mostra o formulario de criacao de funcionarios
     {
-        return view('funcionarios.create');
+        return view('funcionarios.create');// retorna na view create
     }
 
  
@@ -41,7 +41,7 @@ class FuncionariosController extends Controller
 
     public function store(Request $request)//salva o novo funcionario
     {
-        $request->validate([// valida os dados se estão corretos de acordo com as regras definidas, como por exemplo, se o email é único, se o cpf tem 11 caracteres, etc.
+        $request->validate([// valida os dados se estão corretos de acordo com as regras definidas
             'nome' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:funcionarios',
             'cpf' => 'required|string|size:11|unique:funcionarios',
@@ -51,31 +51,29 @@ class FuncionariosController extends Controller
             'cargo' => 'required|string|max:255',
             'departamento' => 'required|string|max:255',
             'status' => 'boolean',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'nullable|image|mimes:png,jpg|max:2048',
         ]);
 
         $data = $request->all();//array com os dados do request
         
-        // trata o checkbox status (necessário para permitir desativar funcionários)
+        // verifica se o checkbox status foi marcado, se sim, define como true, caso contrário false
         $data['status'] = $request->has('status') ? true : false;
 
         // Upload da foto
-        if ($request->hasFile('foto')) {// verifica se tem arquivo de foto
-            $foto = $request->file('foto');// pega o arquivo de foto
-            $nomeArquivo = time() . '_' . $foto->getClientOriginalName();// cria um nome unico para o arquivo
+        if ($request->hasFile('foto')) {// verifica se a foto foi enviada
+            $foto = $request->file('foto');// obtém o arquivo da foto
+            $nomeArquivo = time() . '_' . $foto->getClientOriginalName();// cria um nome único para o arquivo
             
-      
-            $caminho = public_path('uploads/funcionarios');// caminho onde as fotos serão salvas
-            if (!file_exists($caminho)) {// verifica se a pasta existe
-                mkdir($caminho, 0755, true);// se não existir, cria a pasta
+            $caminho = public_path('uploads/funcionarios');// define o caminho onde a foto será salva
+            if (!file_exists($caminho)) {// verifica se a pasta existe, se não, cria
+                mkdir($caminho, 0755, true);
             }
             
-            // Mover arquivo para pasta pública
-            $foto->move($caminho, $nomeArquivo);// move o arquivo para a pasta criada
-            $data['foto'] = $nomeArquivo;// salva o nome do arquivo no array de dados
+            $foto->move($caminho, $nomeArquivo);// move a foto para o caminho definido
+            $data['foto'] = $nomeArquivo;// armazena o nome do arquivo no array de dados
         }
 
-        Funcionario::create($data);// cria o novo funcionario no banco de dados de acordo com a variavel $data
+        Funcionario::create($data);// cria o novo funcionario no banco de dados
 
         return redirect()->route('funcionarios.index')//redireciona para a lista de funcionarios
         ->with('success', 'Funcionário criado com sucesso!');// mensagem de sucesso
@@ -92,7 +90,7 @@ class FuncionariosController extends Controller
     public function show($id)
     {
         $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id
-        return view('funcionarios.show', compact('funcionario')); // mostra os detalhes do funcionario
+        return view('funcionarios.show', compact('funcionario')); // mostra os detalhes do funcionario na view show
     }
 
   
@@ -106,7 +104,7 @@ class FuncionariosController extends Controller
     public function edit($id)
     {
         $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id
-        return view('funcionarios.edit', compact('funcionario'));// mostra o formulario de edicao do funcionario
+        return view('funcionarios.edit', compact('funcionario'));// mostra o formulario de edicao do funcionario na view edit
     }
 
  
@@ -119,7 +117,7 @@ class FuncionariosController extends Controller
 
     public function update(Request $request, $id)
     {
-        $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id
+        $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id, se não encontrar da um erro 404
 
         $request->validate([
             'nome' => 'required|string|max:255',
@@ -131,16 +129,16 @@ class FuncionariosController extends Controller
             'cargo' => 'required|string|max:255',
             'departamento' => 'required|string|max:255',
             'status' => 'boolean',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' => 'nullable|image|mimes:png,jpg|max:2048',
         ]);
 
         $data = $request->all();
         
-        // Tratar status como boolean
-        $data['status'] = $request->has('status') ? (bool)$request->status : false;
+        $data['status'] = $request->has('status') ? true : false;
+
 
         // Upload da nova foto
-        if ($request->hasFile('foto')) {// verifica se tem arquivo de foto novo
+        if ($request->hasFile('foto')) {
             // Deletar foto antiga se existir
             if ($funcionario->foto) {
                 $caminhoAntigo = public_path('uploads/funcionarios/' . $funcionario->foto);
@@ -152,18 +150,16 @@ class FuncionariosController extends Controller
             $foto = $request->file('foto');
             $nomeArquivo = time() . '_' . $foto->getClientOriginalName();
             
-            // Criar diretório se não existir
             $caminho = public_path('uploads/funcionarios');
             if (!file_exists($caminho)) {
                 mkdir($caminho, 0755, true);
             }
             
-            // Mover arquivo para pasta pública
             $foto->move($caminho, $nomeArquivo);
             $data['foto'] = $nomeArquivo;
         }
 
-        $funcionario->update($data);
+        $funcionario->update($data);// atualiza os dados do funcionario
 
         return redirect()->route('funcionarios.index')
                          ->with('success', 'Funcionário atualizado com sucesso!');

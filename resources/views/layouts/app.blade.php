@@ -11,7 +11,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="{{ route('funcionarios.index') }}">
-                <i class="fas fa-users me-2"></i>Sistema de Funcionários
+                Sistema de Funcionários
             </a>
         </div>
     </nav>

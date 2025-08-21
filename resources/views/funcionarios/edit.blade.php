@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1><i class="fas fa-user-edit me-2"></i>Editar Funcionário</h1>
+    <h1>Editar Funcionário</h1>
     <a href="{{ route('funcionarios.index') }}" class="btn btn-secondary">
-        <i class="fas fa-arrow-left me-2"></i>Voltar
+        Voltar
     </a>
 </div>
 
@@ -21,25 +21,16 @@
             <hr>
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-success">
-                    <i class="fas fa-save me-2"></i>Atualizar
+                    Atualizar
                 </button>
                 <a href="{{ route('funcionarios.show', $funcionario->id) }}" class="btn btn-info">
-                    <i class="fas fa-eye me-2"></i>Visualizar
+                    Ver Detalhes
                 </a>
                 <a href="{{ route('funcionarios.index') }}" class="btn btn-secondary">
-                    <i class="fas fa-times me-2"></i>Cancelar
+                    Cancelar
                 </a>
             </div>
         </form>
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script>
-    // Máscara para CPF
-    document.getElementById('cpf').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/\D/g, '');
-    });
-</script>
 @endsection

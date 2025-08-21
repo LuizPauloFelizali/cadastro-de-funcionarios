@@ -22,6 +22,6 @@ Route::middleware(['auth'])->group(function () {
     })->name('home');
     
 
-    // Rotas CRUD de funcionários
+    // rotas CRUD de funcionários
     Route::resource('funcionarios', 'FuncionariosController');
 });
