@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;//importa a classe request 
 use App\Models\Funcionario;//importa o modelo Funcionario
+use Illuminate\Contracts\Cache\Store;
+use Illuminate\Support\Facades\Storage;
 
 class FuncionariosController extends Controller 
 {
@@ -63,12 +65,11 @@ class FuncionariosController extends Controller
             $foto = $request->file('foto');// obtém o arquivo da foto
             $nomeArquivo = time() . '_' . $foto->getClientOriginalName();// cria um nome único para o arquivo
             
-            $caminho = public_path('uploads/funcionarios');// define o caminho onde a foto será salva
-            if (!file_exists($caminho)) {// verifica se a pasta existe, se não, cria
-                mkdir($caminho, 0755, true);
-            }
+            // Criar diretório usando Storage
+            Storage::disk('public')->makeDirectory('uploads/funcionarios');
             
-            $foto->move($caminho, $nomeArquivo);// move a foto para o caminho definido
+            // Salvar arquivo usando Storage
+            $foto->storeAs('uploads/funcionarios', $nomeArquivo, 'public');
             $data['foto'] = $nomeArquivo;// armazena o nome do arquivo no array de dados
         }
 
@@ -140,21 +141,17 @@ class FuncionariosController extends Controller
         if ($request->hasFile('foto')) {
             // Deletar foto antiga se existir
             if ($funcionario->foto) {
-                $caminhoAntigo = public_path('uploads/funcionarios/' . $funcionario->foto);
-                if (file_exists($caminhoAntigo)) {
-                    unlink($caminhoAntigo);
-                }
+                Storage::disk('public')->delete('uploads/funcionarios/' . $funcionario->foto);
             }
 
             $foto = $request->file('foto');
             $nomeArquivo = time() . '_' . $foto->getClientOriginalName();
             
-            $caminho = public_path('uploads/funcionarios');
-            if (!file_exists($caminho)) {
-                mkdir($caminho, 0755, true);
-            }
+            // Criar diretório usando Storage
+            Storage::disk('public')->makeDirectory('uploads/funcionarios');
             
-            $foto->move($caminho, $nomeArquivo);
+            // Salvar arquivo usando Storage
+            $foto->storeAs('uploads/funcionarios', $nomeArquivo, 'public');
             $data['foto'] = $nomeArquivo;
         }
 
@@ -178,10 +175,7 @@ class FuncionariosController extends Controller
         
         // Deletar foto se existir
         if ($funcionario->foto) {
-            $caminhoFoto = public_path('uploads/funcionarios/' . $funcionario->foto);
-            if (file_exists($caminhoFoto)) {
-                unlink($caminhoFoto);
-            }
+            Storage::disk('public')->delete('uploads/funcionarios/' . $funcionario->foto);
         }
         
         $funcionario->delete();    // deleta o funcionario do banco de dados
