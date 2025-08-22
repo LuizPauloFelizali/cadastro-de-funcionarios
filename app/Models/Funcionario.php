@@ -28,6 +28,6 @@ class Funcionario extends Model // Modelo para a tabela funcionarios
         return $this->foto ? asset('uploads/funcionarios/'.$this->foto) : null; // retorna a URL da foto se existir, caso contrário retorna null
     }
 
-    use SoftDeletes; //habilita soft delete, permitindo que os registros sejam "excluídos" sem serem removidos do banco de dados
+    use SoftDeletes; //habilita soft delete, permitindo que os registros sejam "excluídos" sem serem removidos do banco de dados e que mostre apenas os funcionários ativos
 
 }

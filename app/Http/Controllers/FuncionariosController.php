@@ -72,7 +72,7 @@ class FuncionariosController extends Controller
             $data['foto'] = $nomeArquivo;// armazena o nome do arquivo no array de dados
         }
 
-        Funcionario::create($data);// cria o novo funcionario no banco de dados
+        Funcionario::create($data);// cria o novo funcionario no banco de dados na classe Funcionario
 
         return redirect()->route('funcionarios.index')//redireciona para a lista de funcionarios
         ->with('success', 'Funcionário criado com sucesso!');// mensagem de sucesso
@@ -88,7 +88,7 @@ class FuncionariosController extends Controller
 
     public function show($id)
     {
-        $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id
+        $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id, se não encontrar da um erro 404
         return view('funcionarios.show', compact('funcionario')); // mostra os detalhes do funcionario na view show
     }
 
@@ -102,7 +102,7 @@ class FuncionariosController extends Controller
     
     public function edit($id)
     {
-        $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id
+        $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id, se não encontrar da um erro 404
         return view('funcionarios.edit', compact('funcionario'));// mostra o formulario de edicao do funcionario na view edit
     }
 
@@ -118,7 +118,7 @@ class FuncionariosController extends Controller
     {
         $funcionario = Funcionario::findOrFail($id);// busca o funcionario pelo id, se não encontrar da um erro 404
 
-        $request->validate([
+        $request->validate([//caso não passe na validação, retorna para o formulário com os erros pre definidos
             'nome' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:funcionarios,email,' . $id,
             'cpf' => 'required|string|size:11|unique:funcionarios,cpf,' . $id,
@@ -158,7 +158,7 @@ class FuncionariosController extends Controller
             $data['foto'] = $nomeArquivo;
         }
 
-        $funcionario->update($data);// atualiza os dados do funcionario
+        $funcionario->update($data);// atualiza os dados do funcionario, laravel salva no banco de dados
 
         return redirect()->route('funcionarios.index')
                          ->with('success', 'Funcionário atualizado com sucesso!');
@@ -187,6 +187,6 @@ class FuncionariosController extends Controller
         $funcionario->delete();    // deleta o funcionario do banco de dados
 
         return redirect()->route('funcionarios.index')
-                         ->with('success', 'Funcionário deletado com sucesso!');
+                         ->with('success', 'Funcionário deletado com sucesso!');//mensagem vai para app.blade.php
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;// importa a classe Migration
 use Illuminate\Database\Schema\Blueprint;// importa a classe Blueprint
 use Illuminate\Support\Facades\Schema;// importa a classe Schema
 
-class CreateFuncionariosTable extends Migration
+class CreateFuncionariosTable extends Migration// cria new createfuncionariostable e executa as funções up e down
 {
     /**
      * Run the migrations.
